@@ -38,6 +38,9 @@ stages:
               inputs:
                 targetPath: '$(Pipeline.Workspace)/farmer/$(project)-$(env).json'
                 artifactName: '$(env)'
+            - script: dotnet FarmerFun.dll false $(project) $(env) $(dev-sql-password)
+              displayName: "Deploy $(env) resources"
+              workingDirectory: '$(Pipeline.Workspace)/farmer' 
   - stage: Staging
     jobs:
     - deployment: StagingDeploy
@@ -56,3 +59,6 @@ stages:
               inputs:
                 targetPath: '$(Pipeline.Workspace)/farmer/$(project)-$(env).json'
                 artifactName: '$(env)'
+            - script: dotnet FarmerFun.dll false $(project) $(env) $(dev-sql-password)
+              displayName: "Deploy $(env) resources"
+              workingDirectory: '$(Pipeline.Workspace)/farmer' 
