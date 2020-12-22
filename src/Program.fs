@@ -44,7 +44,7 @@ let main argv =
                 sku WebApp.Sku.B1
             }
             servicePlans.Add(backAppName, backPlan)
-        | _-> failwith("Error: returns " + argv.[0])
+        | _-> failwith("Error: returns " + env)
 
         servicePlans
 
