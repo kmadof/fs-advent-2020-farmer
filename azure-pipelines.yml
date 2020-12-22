@@ -38,7 +38,16 @@ stages:
               inputs:
                 targetPath: '$(Pipeline.Workspace)/farmer/$(project)-$(env).json'
                 artifactName: '$(env)'
+            - task: AzureCLI@2
+              displayName: "Deploy $(env) resources"
+              inputs:
+                azureSubscription: 'full-subscription'
+                scriptType: 'pscore'
+                scriptLocation: 'inlineScript'
+                inlineScript: dotnet FarmerFun.dll false $(project) $(env) $(dev-sql-password)
+                workingDirectory: '$(Pipeline.Workspace)/farmer' 
             - script: dotnet FarmerFun.dll false $(project) $(env) $(dev-sql-password)
+              enabled: false
               displayName: "Deploy $(env) resources"
               workingDirectory: '$(Pipeline.Workspace)/farmer' 
   - stage: Staging
@@ -59,6 +68,15 @@ stages:
               inputs:
                 targetPath: '$(Pipeline.Workspace)/farmer/$(project)-$(env).json'
                 artifactName: '$(env)'
+            - task: AzureCLI@2
+              displayName: "Deploy $(env) resources"
+              inputs:
+                azureSubscription: 'full-subscription'
+                scriptType: 'pscore'
+                scriptLocation: 'inlineScript'
+                inlineScript: dotnet FarmerFun.dll false $(project) $(env) $(dev-sql-password)
+                workingDirectory: '$(Pipeline.Workspace)/farmer' 
             - script: dotnet FarmerFun.dll false $(project) $(env) $(dev-sql-password)
+              enabled: false
               displayName: "Deploy $(env) resources"
               workingDirectory: '$(Pipeline.Workspace)/farmer' 
