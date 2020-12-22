@@ -27,6 +27,9 @@ stages:
           deploy:
             steps:
             - script: echo "hello, $(project)-dev"
+            - script: |
+                ls $(Pipeline.Workspace)
+                ls $(Pipeline.Workspace)/farmer
   - stage: Staging
     jobs:
     - deployment: StagingDeploy
