@@ -30,7 +30,7 @@ stages:
         runOnce:
           deploy:
             steps:
-            - script: dotnet run -- true campo $(env) pass123@
+            - script: dotnet FarmerFun.dll true $(project) $(env) pass123@
               displayName: "Create $(env) template"
               workingDirectory: '$(Pipeline.Workspace)/farmer' 
             - task: PublishPipelineArtifact@1
@@ -48,7 +48,7 @@ stages:
         runOnce:
           deploy:
             steps:
-            - script: dotnet run -- true campo $(env) pass123@
+            - script: dotnet FarmerFun.dll true $(project) $(env) pass123@
               displayName: "Create $(env) template"
               workingDirectory: '$(Pipeline.Workspace)/farmer' 
             - task: PublishPipelineArtifact@1
