@@ -9,7 +9,15 @@ stages:
     jobs:
     - job: Build
       steps:
-      - script: echo "hello to my first Build"
+      - script: |
+          dotnet restore
+          dotnet build
+          dotnet publish -o $(Pipeline.Workspace)
+        workingDirectory: "src"
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(Pipeline.Workspace)' 
+          artifactName: 'farmer'
   - stage: Dev
     jobs:
     - deployment: DevDeploy
