@@ -1,11 +1,30 @@
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+variables:
+  project: campo
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+  - stage: Build
+    jobs:
+    - job: Build
+      steps:
+      - script: echo "hello to my first Build"
+  - stage: Dev
+    jobs:
+    - deployment: DevDeploy
+      environment: '$(project)-dev'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - script: echo "hello, $(project)-dev"
+  - stage: Staging
+    jobs:
+    - deployment: StagingDeploy
+      environment: '$(project)-staging'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - script: echo "hello, $(project)-staging"
