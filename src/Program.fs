@@ -95,7 +95,7 @@ let main argv =
 
     let executeDeployment = 
         match isDryRun with
-        | true ->  Writer.quickWrite  "myFirstTemplate"
+        | true ->  Writer.quickWrite  prefix
         | false -> 
             let deploy deployment =
 

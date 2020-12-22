@@ -13,8 +13,10 @@ stages:
           dotnet restore
           dotnet build
           dotnet publish -o $(Pipeline.Workspace)
+        displayName: 'Build the app'
         workingDirectory: "src"
       - task: PublishPipelineArtifact@1
+        displayName: "Publish Farmer artifact"
         inputs:
           targetPath: '$(Pipeline.Workspace)' 
           artifactName: 'farmer'
@@ -22,20 +24,35 @@ stages:
     jobs:
     - deployment: DevDeploy
       environment: '$(project)-dev'
+      variables:
+        env: staging
       strategy:
         runOnce:
           deploy:
             steps:
-            - script: echo "hello, $(project)-dev"
-            - script: |
-                ls $(Pipeline.Workspace)
-                ls $(Pipeline.Workspace)/farmer
+            - script: dotnet run -- true campo $(env) pass123@
+              displayName: "Create $(env) template"
+              workingDirectory: '$(Pipeline.Workspace)/farmer' 
+            - task: PublishPipelineArtifact@1
+              displayName: "Publish $(env) template"
+              inputs:
+                targetPath: '$(Pipeline.Workspace)/farmer/$(project)-$(env).json'
+                artifactName: '$(env)'
   - stage: Staging
     jobs:
     - deployment: StagingDeploy
       environment: '$(project)-staging'
+      variables:
+        env: staging
       strategy:
         runOnce:
           deploy:
             steps:
-            - script: echo "hello, $(project)-staging"
+            - script: dotnet run -- true campo $(env) pass123@
+              displayName: "Create $(env) template"
+              workingDirectory: '$(Pipeline.Workspace)/farmer' 
+            - task: PublishPipelineArtifact@1
+              displayName: "Publish $(env) template"
+              inputs:
+                targetPath: '$(Pipeline.Workspace)/farmer/$(project)-$(env).json'
+                artifactName: '$(env)'
